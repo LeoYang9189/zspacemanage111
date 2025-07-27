@@ -14,7 +14,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/admin/",
+  base: "/",
   server: {
     host: "0.0.0.0",
     port: 8088,
