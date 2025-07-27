@@ -172,9 +172,26 @@ const rules = {
 // 获取验证码图片
 const vImg = ref('')
 const getVImg = async () => {
-  const [err, res] = await tryCatch(getVerifyImages)
-  if (err) return
-  vImg.value = res.verifyImages
+  try {
+    const [err, res] = await tryCatch(getVerifyImages)
+    if (err) {
+      console.error('获取验证码失败:', err)
+      // 如果获取失败，显示一个默认的提示
+      vImg.value = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+点击刷新</dGV4dD48L3N2Zz4='
+      return
+    }
+    
+    if (res && res.verifyImages) {
+      vImg.value = res.verifyImages
+      console.log('验证码加载成功')
+    } else {
+      console.error('验证码响应格式错误:', res)
+      vImg.value = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+点击刷新</dGV4dD48L3N2Zz4='
+    }
+  } catch (error) {
+    console.error('验证码加载异常:', error)
+    vImg.value = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+点击刷新</dGV4dD48L3N2Zz4='
+  }
 }
 getVImg()
 

@@ -49,15 +49,27 @@ async function handleRequest(request: NextRequest, method: string) {
     }
 
     const response = await fetch(targetUrl, options)
-    const data = await response.text()
+    
+    // 获取响应的Content-Type
+    const contentType = response.headers.get('Content-Type') || 'application/json'
+    
+    // 根据Content-Type处理响应数据
+    let data: string | ArrayBuffer
+    if (contentType.includes('application/json')) {
+      data = await response.text()
+    } else {
+      // 对于非JSON数据（如图片），使用ArrayBuffer
+      data = await response.arrayBuffer()
+    }
 
     return new NextResponse(data, {
       status: response.status,
       headers: {
-        'Content-Type': response.headers.get('Content-Type') || 'application/json',
+        'Content-Type': contentType,
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, backend-token',
+        'Cache-Control': response.headers.get('Cache-Control') || 'no-cache',
       },
     })
   } catch (error) {
